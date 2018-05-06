@@ -1,0 +1,36 @@
+div {
+    position: relative;
+}
+
+.a-train {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    position: absolute;
+    transition: 1s linear;
+    top: 107px;
+    left: 61px;
+}
+
+.c-train {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: green;
+    position: absolute;
+    transition: 1s linear;
+    left: 122px;
+    top: 49px;
+}
+
+.b-train {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: blue;
+    position: absolute;
+    transition: 1s linear;
+    left: 190px;
+    top: 223px;
+}
