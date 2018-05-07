@@ -1,14 +1,16 @@
 
-document.getElementById('go').addEventListener('click',startMove);
-document.getElementById('reset').addEventListener('click',resetMove);
 
-function Station(name, posX, posY) {
-    this.name = name;
-    this.posX = posX;
-    this.posY = posY;
+
+class Station {
+    constructor(name, posX, posY) {
+        this.name = name;
+        this.posX = posX;
+        this.posY = posY;
+    }
+
 }
 
-var aDotsPosition=[
+let aDotsPosition=[
     new Station("a0", '61px' , '107px'),
     new Station("a1", '115px' , '101px'),
     new Station("ac", '168px' , '96px'),
@@ -20,7 +22,7 @@ var aDotsPosition=[
 ];
 
 
-var cDotsPosition=[
+let cDotsPosition=[
     new Station("c0", '122px' , '49px'),
     new Station("c1", '140px' , '67px'),
     new Station("ac", '168px' , '96px'),
@@ -29,7 +31,7 @@ var cDotsPosition=[
     new Station("c3", '293px' , '219px'),
 ];
 
-var bDotsPosition=[
+let bDotsPosition=[
     new Station("b0", '190px' , '223px'),
     new Station("b1", '203px' , '187px'),
     new Station("ab", '240px' , '87px'),
@@ -38,31 +40,65 @@ var bDotsPosition=[
     new Station("b3", '266px' , '16px'),
 ];
 
-var trainPassengers={
+let trainPassengers={
     a:0,
     b:0,
     c:0,
 };
 
-var startPoints={
+let startPoints={
     a:0,
     b:0,
     c:0,
 };
 
-var moveInterval;
+let moveInterval;
 
-function startMove() {
+ let animationMove=(a,b,c)=> {
+
+    aDotsPosition.map((item)=> {
+        if (item.name==a) {
+            document.querySelector('.a-train').style.top=item.posY;
+            document.querySelector('.a-train').style.left=item.posX;
+        }
+    });
+    bDotsPosition.map((item) =>{
+        if (item.name==b) {
+            document.querySelector('.b-train').style.top=item.posY;
+            document.querySelector('.b-train').style.left=item.posX;
+        }
+    });
+    cDotsPosition.map((item)=> {
+        if (item.name == c) {
+            document.querySelector('.c-train').style.top = item.posY;
+            document.querySelector('.c-train').style.left = item.posX;
+        }
+    })
+};
+
+
+
+ let checkWay=(way,point)=> {
+    let station=way[point%way.length];
+    if (way[way.length-1-point%way.length]==way[0]) {
+        way.reverse()
+    }
+    return station;
+}
+
+
+ let startMove = () => {
+    
     document.getElementById('go').disabled=true;
-    var aWay=['a0','a1','ac','a2','ab','a3','a4'];
-    var bWay=['b0','b1','bc','ab','b2','b3'];
-    var cWay=['c0','c1','ac','bc','c2','c3'];
+    let aWay=['a0','a1','ac','a2','ab','a3','a4'];
+    let bWay=['b0','b1','bc','ab','b2','b3'];
+    let cWay=['c0','c1','ac','bc','c2','c3'];
     trainPassengers.a=document.getElementById('aTrainCount').value || 10;
     trainPassengers.b=document.getElementById('bTrainCount').value || 12;
     trainPassengers.c=document.getElementById('cTrainCount').value || 20;
-    var aRealWay=document.getElementById('aTrainStation').value || 'a0';
-    var bRealWay=document.getElementById('bTrainStation').value || 'b0';
-    var cRealWay=document.getElementById('cTrainStation').value || 'c0';
+    let aRealWay=document.getElementById('aTrainStation').value || 'a0';
+    let bRealWay=document.getElementById('bTrainStation').value || 'b0';
+    let cRealWay=document.getElementById('cTrainStation').value || 'c0';
 
     startPoints.a=aWay.indexOf(aRealWay);
     startPoints.b=bWay.indexOf(bRealWay);
@@ -71,65 +107,65 @@ function startMove() {
         animationMove(aRealWay,bRealWay,cRealWay);
         moveInterval=setInterval(function() {
             // var a=startCheck(aWay,startPointA);
-            var a=checkWay(aWay,startPoints.a+1);
-            var b=checkWay(bWay,startPoints.b+1);
-            var c=checkWay(cWay,startPoints.c+1);
-            if (a==c) {
+            let aPoint=checkWay(aWay,startPoints.a+1);
+            let bPoint=checkWay(bWay,startPoints.b+1);
+            let cPoint=checkWay(cWay,startPoints.c+1);
+            if (aPoint==cPoint) {
 
-                if (cRealWay==b) {
+                if (cRealWay==bPoint) {
                     startPoints.a++;
-                    animationMove(a,null,null);
+                    animationMove(aPoint,null,null);
                 }
                 else {
                     if (trainPassengers.a>= trainPassengers.c) {
                         startPoints.a++;
                         startPoints.b++;
-                        animationMove(a,b,null);
+                        animationMove(aPoint,bPoint,null);
                     }
                     else {
                         startPoints.c++;
                         startPoints.b++;
-                        animationMove(null,b,c);
+                        animationMove(null,bPoint,cPoint);
                     }
 
                 }
             }
-            else if (b==c) {
+            else if (bPoint==cPoint) {
 
-                if (bRealWay==a) {
+                if (bRealWay==aPoint) {
                     startPoints.c++;
-                    animationMove(null,null,c);
+                    animationMove(null,null,cPoint);
                 }
                 else {
                     if (trainPassengers.b>=trainPassengers.c) {
                         startPoints.b++;
                         startPoints.a++;
-                        animationMove(a,b,null);
+                        animationMove(aPoint,bPoint,null);
                     }
                 else {
                         startPoints.c++;
                         startPoints.a++;
-                        animationMove(a,null,c);
+                        animationMove(aPoint,null,cPoint);
                     }
                 }
 
             }
 
-            else if (a==b) {
-                if (aRealWay==b) {
+            else if (aPoint==bPoint) {
+                if (aRealWay==bPoint) {
                     startPoints.c++;
-                    animationMove(null,null,c);
+                    animationMove(null,null,cPoint);
                 }
                 else {
                     if (trainPassengers.b>=trainPassengers.a) {
                         startPoints.b++;
                         startPoints.c++;
-                        animationMove(null,b,c);
+                        animationMove(null,bPoint,cPoint);
                     }
                 else {
                         startPoints.c++;
                         startPoints.a++;
-                        animationMove(a,null,c);
+                        animationMove(aPoint,null,cPoint);
                     }
                 }
 
@@ -138,11 +174,11 @@ function startMove() {
                 startPoints.a++;
                 startPoints.b++;
                 startPoints.c++;
-                animationMove(a,b,c);
+                animationMove(aPoint,bPoint,cPoint);
             }
-            aRealWay=a;
-            bRealWay=b;
-            cRealWay=c;
+            aRealWay=aPoint;
+            bRealWay=bPoint;
+            cRealWay=cPoint;
 
         },2000)
     }
@@ -154,40 +190,9 @@ function startMove() {
 
 
 
-function animationMove(a,b,c) {
-
-    aDotsPosition.map(function (item) {
-        if (item.name==a) {
-            document.querySelector('.a-train').style.top=item.posY;
-            document.querySelector('.a-train').style.left=item.posX;
-        }
-    });
-    bDotsPosition.map(function (item) {
-        if (item.name==b) {
-            document.querySelector('.b-train').style.top=item.posY;
-            document.querySelector('.b-train').style.left=item.posX;
-        }
-    });
-    cDotsPosition.map(function (item) {
-        if (item.name == c) {
-            document.querySelector('.c-train').style.top = item.posY;
-            document.querySelector('.c-train').style.left = item.posX;
-        }
-    })
-}
 
 
-
-function checkWay(way,point) {
-    var station=way[point%way.length];
-    if (way[way.length-1-point%way.length]==way[0]) {
-        way.reverse()
-    }
-    return station;
-}
-
-
-function resetMove() {
+ resetMove=()=> {
     clearInterval(moveInterval);
     document.getElementById('go').disabled=false;
     animationMove('a0','b0','c0');
@@ -195,4 +200,7 @@ function resetMove() {
     startPoints.b=0;
     startPoints.c=0;
 
-}
+};
+
+document.getElementById('go').addEventListener('click',startMove);
+document.getElementById('reset').addEventListener('click',resetMove);
