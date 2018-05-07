@@ -34,3 +34,17 @@ div {
     left: 190px;
     top: 223px;
 }
+
+.info {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-pass , .info-station {
+    width: 180px;
+}
+
+input {
+    width: 100%;
+}

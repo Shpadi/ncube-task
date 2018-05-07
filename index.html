@@ -9,17 +9,20 @@
     <title>Document</title>
 </head>
 <body>
-<div>
-    Количество пассажиров
-    <input id="aTrainCount" type="number">
-    <input id="bTrainCount" type="number">
-    <input id="cTrainCount" type="number">
-</div>
-<div>
-    Станция
-    <input id="aTrainStation" type="text">
-    <input id="bTrainStation" type="text">
-    <input id="cTrainStation" type="text">
+<div class="info">
+    <div class="info-pass">
+        Количество пассажиров
+        <p>a:<input id="aTrainCount" type="number"></p>
+        <p>b:<input id="bTrainCount" type="number"></p>
+        <p>c:<input id="cTrainCount" type="number"></p>
+    </div>
+    <div class="info-station">
+        Станция
+        <p>a:<input id="aTrainStation" type="text"></p>
+        <p>b:<input id="bTrainStation" type="text"></p>
+        <p>c:<input id="cTrainStation" type="text"></p>
+    </div>
+
 </div>
 <div>
     <div class="a-train" ></div>
@@ -28,6 +31,7 @@
     <img src="image/ways.png">
 </div>
 <button id="go">Go</button>
+<button id="reset">Reset</button>
 <script src="js/main.js"></script>
 </body>
 </html>
