@@ -90,7 +90,7 @@ let moveInterval;
 
  let startMove = () => {
 
-    document.getElementById('go').disabled=true;
+
     let aWay=['a0','a1','ac','a2','ab','a3','a4'];
     let bWay=['b0','b1','bc','ab','b2','b3'];
     let cWay=['c0','c1','ac','bc','c2','c3'];
@@ -104,6 +104,7 @@ let moveInterval;
     startPoints.b=bWay.indexOf(bRealWay);
     startPoints.c=cWay.indexOf(cRealWay);
     if ((startPoints.a!=-1 && startPoints.b!=-1 && startPoints.c!=-1) && (aRealWay!=bRealWay && bRealWay!=cRealWay && aRealWay!=cRealWay)) {
+        document.getElementById('go').disabled=true;
         animationMove(aRealWay,bRealWay,cRealWay);
         moveInterval=setInterval(function() {
 
