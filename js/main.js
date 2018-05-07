@@ -78,96 +78,114 @@ let moveInterval;
 
 
 
+
  let checkWay=(way,point)=> {
+     if (way[point%way.length]==way[0]) {
+         way.reverse()
+     }
     let station=way[point%way.length];
-    if (way[way.length-1-point%way.length]==way[0]) {
-        way.reverse()
-    }
     return station;
 }
 
 
  let startMove = () => {
-    
+
     document.getElementById('go').disabled=true;
     let aWay=['a0','a1','ac','a2','ab','a3','a4'];
     let bWay=['b0','b1','bc','ab','b2','b3'];
     let cWay=['c0','c1','ac','bc','c2','c3'];
-    trainPassengers.a=document.getElementById('aTrainCount').value || 10;
-    trainPassengers.b=document.getElementById('bTrainCount').value || 12;
-    trainPassengers.c=document.getElementById('cTrainCount').value || 20;
+    trainPassengers.a=parseInt(document.getElementById('aTrainCount').value) || 10;
+    trainPassengers.b=parseInt(document.getElementById('bTrainCount').value) || 12;
+    trainPassengers.c=parseInt(document.getElementById('cTrainCount').value) || 20;
     let aRealWay=document.getElementById('aTrainStation').value || 'a0';
     let bRealWay=document.getElementById('bTrainStation').value || 'b0';
     let cRealWay=document.getElementById('cTrainStation').value || 'c0';
-
     startPoints.a=aWay.indexOf(aRealWay);
     startPoints.b=bWay.indexOf(bRealWay);
     startPoints.c=cWay.indexOf(cRealWay);
     if ((startPoints.a!=-1 && startPoints.b!=-1 && startPoints.c!=-1) && (aRealWay!=bRealWay && bRealWay!=cRealWay && aRealWay!=cRealWay)) {
         animationMove(aRealWay,bRealWay,cRealWay);
         moveInterval=setInterval(function() {
-            // var a=startCheck(aWay,startPointA);
+
             let aPoint=checkWay(aWay,startPoints.a+1);
             let bPoint=checkWay(bWay,startPoints.b+1);
             let cPoint=checkWay(cWay,startPoints.c+1);
             if (aPoint==cPoint) {
-
-                if (cRealWay==bPoint) {
-                    startPoints.a++;
-                    animationMove(aPoint,null,null);
-                }
-                else {
                     if (trainPassengers.a>= trainPassengers.c) {
-                        startPoints.a++;
-                        startPoints.b++;
-                        animationMove(aPoint,bPoint,null);
+                        if (cRealWay==bPoint) {
+                            startPoints.a++;
+                            animationMove(aPoint,null,null);
+                        }
+                        else {
+                            startPoints.a++;
+                            startPoints.b++;
+                            animationMove(aPoint,bPoint,null);
+                        }
                     }
                     else {
-                        startPoints.c++;
-                        startPoints.b++;
-                        animationMove(null,bPoint,cPoint);
+                        if (aRealWay==bPoint) {
+                            startPoints.c++;
+                            animationMove(null,null,cPoint);
+                        }
+                        else {
+                            startPoints.c++;
+                            startPoints.b++;
+                            animationMove(null,bPoint,cPoint);
+                        }
                     }
 
-                }
             }
             else if (bPoint==cPoint) {
-
-                if (bRealWay==aPoint) {
-                    startPoints.c++;
-                    animationMove(null,null,cPoint);
-                }
-                else {
                     if (trainPassengers.b>=trainPassengers.c) {
-                        startPoints.b++;
-                        startPoints.a++;
-                        animationMove(aPoint,bPoint,null);
+                        if (cRealWay==aPoint){
+                            startPoints.a++;
+                            animationMove(aPoint,null,null);
+                        }
+                        else {
+                            startPoints.b++;
+                            startPoints.a++;
+                            animationMove(aPoint,bPoint,null);
+                        }
                     }
-                else {
-                        startPoints.c++;
-                        startPoints.a++;
-                        animationMove(aPoint,null,cPoint);
+                    else {
+                            if (bRealWay==aPoint) {
+                                startPoints.c++;
+                                animationMove(null,null,cPoint);
+                            }
+                            else {
+                                startPoints.c++;
+                                startPoints.a++;
+                                animationMove(aPoint,null,cPoint);
+                            }
                     }
-                }
+
 
             }
 
             else if (aPoint==bPoint) {
-                if (aRealWay==bPoint) {
-                    startPoints.c++;
-                    animationMove(null,null,cPoint);
-                }
-                else {
+
                     if (trainPassengers.b>=trainPassengers.a) {
-                        startPoints.b++;
-                        startPoints.c++;
-                        animationMove(null,bPoint,cPoint);
+                        if (cRealWay==aPoint) {
+                            startPoints.b++;
+                            animationMove(null,bPoint,null);
+                        }
+                        else {
+                            startPoints.b++;
+                            startPoints.c++;
+                            animationMove(null,bPoint,cPoint);
+                        }
                     }
-                else {
-                        startPoints.c++;
-                        startPoints.a++;
-                        animationMove(aPoint,null,cPoint);
+                    else {
+                        if (bRealWay==cPoint) {
+                            startPoints.a++;
+                            animationMove(aPoint,null,null);
+                        }
+                        else {
+                            startPoints.c++;
+                            startPoints.a++;
+                            animationMove(aPoint,null,cPoint);
+                        }
                     }
-                }
 
             }
             else {
